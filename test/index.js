@@ -1,49 +1,56 @@
+var tap = require('agraddy.test.tap')(__filename);
 var events = require('events');
-var test = require('tape');
 
 var mod;
 
-test('overall', function(t) {
+(function overall() {
 	mod = require('../')();
-	t.equal(typeof mod.setHeader, 'function');
-	t.equal(typeof mod.writeHead, 'function');
-	t.equal(typeof mod.write, 'function');
-	t.equal(typeof mod._body, 'string');
-	t.equal(typeof mod._headers, 'object');
-	t.equal(typeof mod._statusCode, 'number');
+	tap.assert.equal(typeof mod.setHeader, 'function', 'setHeader exists');
+	tap.assert.equal(typeof mod.writeHead, 'function', 'writeHead exists');
+	tap.assert.equal(typeof mod.write, 'function', 'write exists');
+	tap.assert.equal(typeof mod._body, 'string', '_body exists');
+	tap.assert.equal(typeof mod._headers, 'object', '_headers exists');
+	tap.assert.equal(typeof mod._statusCode, 'number', '_statusCode exists');
 
 	// From: http://stackoverflow.com/a/37022523
 	// return test instanceof EventEmitter && typeof test.write === 'function' && typeof test.end ==== 'function'
-	t.ok(mod instanceof events.EventEmitter);
-	t.equal(typeof mod.write, 'function');
-	t.equal(typeof mod.end, 'function');
+	tap.assert(mod instanceof events.EventEmitter, 'EventEmitter');
+	tap.assert.equal(typeof mod.write, 'function', 'write exists');
+	tap.assert.equal(typeof mod.end, 'function', 'end exists');
+})();
 
-	t.end();
-});
 
-test('setHeader', function(t) {
+(function setHeader() {
 	mod = require('../')();
 	mod.setHeader('Content-Type', 'application/javascript');
 
-	t.deepEqual(mod._headers, [{'Content-Type': 'application/javascript'}]);
-	t.end();
-});
+	tap.assert.deepEqual(mod._headers, [{'Content-Type': 'application/javascript'}], 'Headers set');
+})();
 
-test('write', function(t) {
+(function write() {
 	mod = require('../')();
 	mod.write('test');
 
-	t.equal(mod._body, 'test');
-	t.end();
-});
+	tap.assert.equal(mod._body, 'test', '_body should get set');
+})();
 
-test('writeHead', function(t) {
+(function writeHead() {
 	mod = require('../')();
 	mod.writeHead(200, {'Content-Type': 'application/javascript'});
 
-	t.equal(mod._body, '');
-	t.deepEqual(mod._headers, [{'Content-Type': 'application/javascript'}]);
-	t.equal(mod._statusCode, 200);
-	t.end();
-});
+	tap.assert.equal(mod._body, '', '_body should be empty');
+	tap.assert.deepEqual(mod._headers, [{'Content-Type': 'application/javascript'}], '_headers should be set');
+	tap.assert.equal(mod._statusCode, 200, '_statusCode should be set');
+})();
+
+(function endWorking() {
+	mod = require('../')();
+
+	mod.on('finish', function() {
+		tap.assert.equal(mod._body, 'end', '_body should be set');
+	});
+
+	mod.end('end');
+
+})();
 

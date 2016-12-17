@@ -17,6 +17,6 @@
     "url": "https://github.com/agraddy/agraddy.test.res/issues"
   },
   "devDependencies": {
-    "tape": "^4.6.3"
+    "agraddy.test.tap": "^0.2.0"
   }
 }
