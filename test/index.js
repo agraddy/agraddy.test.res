@@ -10,6 +10,7 @@ var mod;
 	tap.assert.equal(typeof mod.write, 'function', 'write exists');
 	tap.assert.equal(typeof mod._body, 'string', '_body exists');
 	tap.assert.equal(typeof mod._headers, 'object', '_headers exists');
+	tap.assert.equal(typeof mod._rawHeaders, 'object', '_rawHeaders exists');
 	tap.assert.equal(typeof mod._statusCode, 'number', '_statusCode exists');
 
 	// From: http://stackoverflow.com/a/37022523
@@ -24,7 +25,8 @@ var mod;
 	mod = require('../')();
 	mod.setHeader('Content-Type', 'application/javascript');
 
-	tap.assert.deepEqual(mod._headers, [{'Content-Type': 'application/javascript'}], 'Headers set');
+	tap.assert.deepEqual(mod._headers, {'content-type': 'application/javascript'}, 'Headers set');
+	tap.assert.deepEqual(mod._rawHeaders, ['Content-Type', 'application/javascript'], 'Headers set');
 })();
 
 (function write() {
@@ -39,7 +41,8 @@ var mod;
 	mod.writeHead(200, {'Content-Type': 'application/javascript'});
 
 	tap.assert.equal(mod._body, '', '_body should be empty');
-	tap.assert.deepEqual(mod._headers, [{'Content-Type': 'application/javascript'}], '_headers should be set');
+	tap.assert.deepEqual(mod._headers, {'content-type': 'application/javascript'}, '_headers should be set');
+	tap.assert.deepEqual(mod._rawHeaders, ['Content-Type', 'application/javascript'], '_rawHeaders should be set');
 	tap.assert.equal(mod._statusCode, 200, '_statusCode should be set');
 })();
 
