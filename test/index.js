@@ -57,3 +57,15 @@ var mod;
 
 })();
 
+(function errorSetHeaderAfterWriteHead() {
+	try {
+		mod = require('../')();
+		mod.writeHead(200, {'Content-Type': 'application/javascript'});
+		mod.setHeader('X-Header', 'too late');
+	} catch(e) {
+		tap.assert(true, 'Should throw an error if setHeader is called after writeHead.');
+	}
+
+})();
+
+
