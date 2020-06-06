@@ -47,6 +47,14 @@ var mod;
 	tap.assert.equal(mod.headersSent, true, 'headersSent should be set');
 })();
 
+(function writeHead() {
+	mod = require('../')();
+	mod.writeHead(422);
+
+	tap.assert.equal(mod._statusCode, 422, '_statusCode should be set');
+	tap.assert.equal(mod.headersSent, true, 'headersSent should be set');
+})();
+
 (function endWorking() {
 	mod = require('../')();
 
