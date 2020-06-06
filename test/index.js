@@ -44,6 +44,7 @@ var mod;
 	tap.assert.deepEqual(mod._headers, {'content-type': 'application/javascript'}, '_headers should be set');
 	tap.assert.deepEqual(mod._rawHeaders, ['Content-Type', 'application/javascript'], '_rawHeaders should be set');
 	tap.assert.equal(mod._statusCode, 200, '_statusCode should be set');
+	tap.assert.equal(mod.headersSent, true, 'headersSent should be set');
 })();
 
 (function endWorking() {
